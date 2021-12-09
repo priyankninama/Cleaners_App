@@ -43,28 +43,21 @@ class CleanersController extends Controller
     {
         $cleaner = Cleaner::create($request->all());
 
-        $cleaner->cities()->attach($request->city);
+        $cleaner->cities()->attach($request->cities);
 
         return redirect('admin/cleaner')->with('success','Cleaner created successfully.');
     }
 
     public function get(Cleaner $cleaner)
     {
-        return response(['data' => $cleaner]);
+        $cities = Cleaner::with('cities')->get()->find($cleaner->id)->cities->pluck('id');
+
+        $data = $cleaner->toArray();
+        $data['cities'] = $cities;
+
+        return response(['data' => $data] );
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Cleaner  $cleaner
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Cleaner $cleaner)
-    {
-        $cities = City::all();
-        $data = compact(['cities', 'cleaner']);
-        return view('admin.cleaner', $data);
-    }
 
     /**
      * Update the specified resource in storage.
@@ -76,6 +69,8 @@ class CleanersController extends Controller
     public function update(CleanerRequest $request, Cleaner $cleaner)
     {    
         $cleaner->update($request->all());
+        $cleanerId = $cleaner->find($request->cleaner_id);
+        $cleanerId->cities()->sync($request->cities);
     
         return response(['message' => 'Cleaner updated successfully.']);
     }

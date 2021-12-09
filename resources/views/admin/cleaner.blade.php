@@ -37,9 +37,10 @@
             <div class="city mt-2 row">
                 <label class="col-md-2">City Name</label>
                 <div class="col-md-4 select_city">
-                    <select class="form-control col" multiple id="city_name" name=city[] value="{{ old('city') }}" >
+                
+                    <select class="form-control col" multiple id="city_name" name=cities[]>
                         @foreach($cities as $city)
-                        <option value="{{ $city->id }}" >{{ $city->name }}</option>
+                        <option value="{{$city->id}}" {{(collect(old('cities'))->contains($city->id))? 'selected':''}} >{{ $city->name }}</option>
                         @endforeach
                     </select>
                 </div>

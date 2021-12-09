@@ -21,8 +21,7 @@ class BookingDetailsController extends Controller
     public function index()
     {
         $bookingDetails = BookingDetail::with('customer', 'cleaner', 'city')->get();
-
-        return view('admin.dashboard',compact('bookingDetails'));
+        return view('dashboard',compact('bookingDetails'));
     }
 
     /**
@@ -43,23 +42,25 @@ class BookingDetailsController extends Controller
      */
     public function store(BookingRequest $request)
     {
+
+        $startTime = Carbon::parse($request->date.' '.$request->time);
+        $endTime = $startTime->copy()->addHours($request->no_of_hours);
+        
+        $bookedCleaners = BookingDetail::bookedCleaners($startTime, $endTime)->get()->pluck('cleaner.id')->unique()->toArray();
+
+        $availableCleaners = City::findorFail($request->city)->cleaners()->select('id')->whereNotIn('id', $bookedCleaners)->get();
+
+        if($availableCleaners->count() == 0){
+
+            return redirect('/')->withInput()
+                ->with('reject','There is no cleaner available in your City.');
+        };
+
         $customer = Customer::create([
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
             'phone_no' => $request->phone_no,
         ]);
-
-        $startTime = Carbon::parse($request->date.' '.$request->time);
-        $endTime = $startTime->copy()->addHours($request->no_of_hours);
-        
-        $bookedCleanersId = BookingDetail::bookedCleaners($startTime, $endTime)->get()->pluck('cleaner.id')->unique()->toArray();
-
-        $availableCleaners = City::findorFail($request->city)->cleaners()->select('id')->whereNotIn('id', $bookedCleanersId)->get();
-
-        if($availableCleaners->count() == 0){
-
-            return redirect('/book-cleaner')->with('reject','There is no cleaner available in your City.');
-        };
 
         $cleaner = $availableCleaners->random();
 
@@ -71,7 +72,7 @@ class BookingDetailsController extends Controller
             'booked_time' => $endTime,
         ]);
 
-        return redirect('/book-cleaner')->with('success','Cleaner Booked successfully.');
+        return redirect("/")->with('success','Cleaner Booked successfully.');
     }
 
     /**

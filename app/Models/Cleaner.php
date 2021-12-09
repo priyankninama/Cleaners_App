@@ -20,9 +20,4 @@ class Cleaner extends Model
         return $this->belongsToMany(City::class);
     }
 
-    public function bookingDetail($cityId) {
-        $city = Cleaner::find($cityId);
-        return $this->hasOne(BookingDetail::class, $city);
-    }
-
 }

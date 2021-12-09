@@ -120,6 +120,7 @@ function getCleaner(cleanerId) {
             $("#first_name").val(res.data.first_name);
             $("#last_name").val(res.data.last_name);
             $("#phone_no").val(res.data.phone_no);
+            $("#city_name").val(res.data.cities)
             $("#add_cleaner").html('Update');
         }
     });

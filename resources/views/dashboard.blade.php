@@ -1,17 +1,30 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard') }}
-        </h2>
-    </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 bg-white border-b border-gray-200">
-                    You're logged in!
-                </div>
-            </div>
-        </div>
-    </div>
-</x-app-layout>
+@extends('admin.layout')
+
+@section('content')
+
+<div class="container mt-4">
+<table class="table table-bordered">
+    <tr class="text-center">
+        <th>Customer Name</th>
+        <th>Phone Number</th>
+        <th>City</th>
+        <th>Date-Time</th>
+        <th>Work Hours</th>
+        <th>Cleaner Name</th>
+    </tr>
+    @foreach ($bookingDetails as $bookingDetail) 
+    <tr class="text-center" >
+        <td>{{ $bookingDetail->customer->first_name . " " . $bookingDetail->customer->last_name }}</td>
+        <td>{{ $bookingDetail->customer->phone_no }}</td>
+        <td>{{ $bookingDetail->city->name }}</td>
+        <td>{{ $bookingDetail->date_time }}</td>
+        <td>{{ $bookingDetail->no_of_hours }}</td>
+        <td>{{ $bookingDetail->cleaner->first_name . " " . $bookingDetail->cleaner->last_name }}</td>
+    </tr>
+
+    @endforeach
+</table>
+</div>
+
+@endsection

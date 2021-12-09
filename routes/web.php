@@ -27,10 +27,13 @@ Route::get('/dashboard', function () {
 
 require __DIR__.'/auth.php';
 
+Route::get('/dashboard', [BookingDetailsController::class, 'index'] )->middleware('auth');
+Route::post('/', [BookingDetailsController::class, 'store'] );
+
+
 Route::get('/', [CustomersController::class, 'index'] );
 
-Route::prefix('/admin')->group(function () {
-    Route::get('/', [BookingDetailsController::class, 'index'] );
+Route::prefix('/admin')->middleware('auth')->group(function () {
 
     Route::get('/cleaner', [CleanersController::class, 'index'] );
     Route::post('/cleaner', [CleanersController::class, 'store'] );
