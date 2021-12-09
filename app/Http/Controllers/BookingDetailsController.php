@@ -21,7 +21,7 @@ class BookingDetailsController extends Controller
     public function index()
     {
         $bookingDetails = BookingDetail::with('customer', 'cleaner', 'city')->get();
-        return view('dashboard',compact('bookingDetails'));
+        return view('dashboard',compact('bookingDetails'))->with('i');
     }
 
     /**

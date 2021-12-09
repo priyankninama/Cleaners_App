@@ -4,8 +4,8 @@
 
 <div class="mt-4 container">
     
-    <div class="w-100 d-flex align-items-center justify-content-center d-inline-block text-center" style="height: 100px; background-color: rgb(234,236,239)">
-        <h1 class="">Booking System</h1>
+    <div class="w-100 d-flex justify-content-center d-inline-block" style="height: 60px; background-color: rgb(255, 255, 255)">
+        <h2>Booking System</h2>
     </div>
 
     @include('messages')
