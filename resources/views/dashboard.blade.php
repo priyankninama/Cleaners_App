@@ -3,7 +3,7 @@
 
 @section('content')
 
-<div class="container mt-4">
+<div class="container-fluid mt-4">
     <div class="w-100 d-flex justify-content-center d-inline-block" style="height: 55px; background-color: rgb(255, 255, 255)">
         <h2>Booking Details</h2>
     </div>
@@ -16,6 +16,7 @@
             <th>Date-Time</th>
             <th>Work Hours</th>
             <th>Cleaner Name</th>
+            <th>Phone Number</th>
         </tr>
         @foreach ($bookingDetails as $bookingDetail) 
         <tr class="text-center" >
@@ -26,6 +27,7 @@
             <td>{{ $bookingDetail->date_time }}</td>
             <td>{{ $bookingDetail->no_of_hours }}</td>
             <td>{{ $bookingDetail->cleaner->first_name . " " . $bookingDetail->cleaner->last_name }}</td>
+            <td>{{ $bookingDetail->cleaner->phone_no}}</td>
         </tr>
 
         @endforeach
